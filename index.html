@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHẦN MỀM QUẢN LÝ THI - THẦY NGUYỄN ĐỨC VĂN- THPT NGA SƠN</title>
+<title>Tạo Phiếu Bốc Thăm Tự Động</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
   :root {
@@ -106,7 +106,7 @@
 <header>
   <div class="logo">📋</div>
   <div>
-    <h1>PHẦN MỀM QUẢN LÝ THI - THẦY NGUYỄN ĐỨC VĂN- THPT NGA SƠN</h1>
+    <h1>Tạo Phiếu Bốc Thăm Tự Động</h1>
     <p>Xuất file Word (.docx) — mở bằng trình duyệt, không cần cài đặt</p>
   </div>
 </header>
@@ -192,13 +192,17 @@
   <!-- CHỮ KÝ -->
   <div class="section">
     <div class="section-title">Chữ ký trưởng điểm thi</div>
-    <div class="sig-upload" onclick="document.getElementById('sigFile').click()">
-      <input type="file" id="sigFile" accept="image/*" onchange="loadSig(this)" style="display:none">
-      <div style="font-size:26px;margin-bottom:6px;">🖊️</div>
-      <p style="font-size:13px;color:var(--muted);">Nhấn để tải ảnh chữ ký<br><span style="font-size:11px;opacity:0.6">PNG hoặc JPG</span></p>
-      <img id="sigPreview" class="sig-preview">
+    <!-- Preview chữ ký hiện tại -->
+    <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+      <img id="sigPreview" style="max-height:56px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);">
+      <div>
+        <div id="sigStatus" style="font-size:13px;color:#2ecc71;margin-bottom:6px;">✅ Đang dùng chữ ký mặc định</div>
+        <button onclick="document.getElementById('sigFile').click()" style="background:rgba(233,69,96,0.15);border:1px solid var(--accent);color:var(--accent);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(233,69,96,0.3)'" onmouseout="this.style.background='rgba(233,69,96,0.15)'">
+          🔄 Thay chữ ký khác
+        </button>
+        <input type="file" id="sigFile" accept="image/*" onchange="loadSig(this)" style="display:none">
+      </div>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:8px;">💡 Nếu không tải ảnh, phiếu sẽ để trống chỗ ký.</p>
   </div>
 
   <!-- NÚT TẠO -->
@@ -23311,7 +23315,16 @@ function togglePhong() {
     document.getElementById('phongTrong').checked ? 'none' : 'block';
 }
 
-let sigBuf = null;
+let sigBuf = 'data:image/png;base64,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';
+
+// Hiển thị ảnh chữ ký mặc định khi trang load
+window.addEventListener('load', () => {
+  const p = document.getElementById('sigPreview');
+  p.src = sigBuf;
+  p.style.display = 'block';
+  document.getElementById('sigStatus').textContent = '✅ Đang dùng chữ ký mặc định';
+});
+
 function loadSig(input) {
   const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
@@ -23321,6 +23334,7 @@ function loadSig(input) {
     p.src = sigBuf; p.style.display = 'block';
   };
   reader.readAsDataURL(file);
+  document.getElementById('sigStatus').textContent = '✅ Đã thay chữ ký mới';
 }
 
 function log(msg, type='info') {
@@ -23474,7 +23488,7 @@ async function generate() {
     function makeDoc(gtSo, mon, buoi, ngay) {
       return new Document({ sections:[{ properties:{ page:{
         size:{width:11906,height:16838},
-        margin:{top:720,bottom:720,left:720,right:720}
+        margin:{top:1134,bottom:1134,left:1134,right:1134}
       }}, children:[new Table({
         width:{size:10466,type:WidthType.DXA},
         columnWidths:[4300,400,4300],
